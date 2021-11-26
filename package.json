@@ -2,7 +2,7 @@
 	"name": "ragemp-typescript",
 	"version": "1.0.0",
 	"scripts": {
-		"format": "prettier --write packages/**/src/**/*.{mjs,ts,js}",
+		"format": "prettier --write {src,scripts}/**/*.ts",
 		"build:production": "rollup -c ./scripts/rollup.config.mjs --environment NODE_ENV:production",
 		"build": "rollup -c ./scripts/rollup.config.mjs",
 		"watch": "rollup -w -c ./scripts/rollup.config.mjs"
