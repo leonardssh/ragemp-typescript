@@ -1,0 +1,57 @@
+{
+	"name": "ragemp-typescript",
+	"version": "1.0.0",
+	"scripts": {
+		"format": "prettier --write packages/**/src/**/*.{mjs,ts,js}",
+		"build:production": "rollup -c ./scripts/rollup.config.mjs --environment NODE_ENV:production",
+		"build": "rollup -c ./scripts/rollup.config.mjs",
+		"watch": "rollup -w -c ./scripts/rollup.config.mjs"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/LeonardSSH/ragemp-typescript.git"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/LeonardSSH/ragemp-typescript/issues"
+	},
+	"homepage": "https://github.com/LeonardSSH/ragemp-typescript#readme",
+	"devDependencies": {
+		"@ragemp/types-client": "github:leonardssh/ragemp-types#types-client",
+		"@ragemp/types-server": "github:leonardssh/ragemp-types#types-server",
+		"@rollup/plugin-json": "^4.1.0",
+		"@rollup/plugin-node-resolve": "^13.0.6",
+		"@rollup/plugin-replace": "^3.0.0",
+		"@types/node": "^16.11.10",
+		"fs-jetpack": "^4.2.0",
+		"prettier": "^2.5.0",
+		"rollup": "^2.60.1",
+		"rollup-plugin-terser": "^7.0.2",
+		"rollup-plugin-typescript2": "^0.31.1",
+		"typescript": "^4.5.2"
+	},
+	"dependencies": {
+		"colorette": "^2.0.16",
+		"dotenv": "^10.0.0"
+	},
+	"prettier": {
+		"$schema": "http://json.schemastore.org/prettierrc",
+		"endOfLine": "lf",
+		"printWidth": 150,
+		"quoteProps": "as-needed",
+		"semi": true,
+		"singleQuote": true,
+		"tabWidth": 4,
+		"trailingComma": "none",
+		"useTabs": true,
+		"overrides": [
+			{
+				"files": "*.yml",
+				"options": {
+					"tabWidth": 2,
+					"useTabs": false
+				}
+			}
+		]
+	}
+}
