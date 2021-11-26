@@ -1,6 +1,6 @@
 {
 	"name": "ragemp-typescript",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"scripts": {
 		"format": "prettier --write {src,scripts}/**/*.ts",
 		"build:production": "rollup -c ./scripts/rollup.config.mjs --environment NODE_ENV:production",
