@@ -6,6 +6,8 @@
 
 Remember to 🌟 this Github if you 💖 it.
 
+> For Javascript Edition, see: [ragemp-javascript](https://github.com/leonardssh/ragemp-javascript)
+
 ## 📌 Features
 
 -   Full RAGE:MP Type Support for VSCode
