@@ -1,3 +1,5 @@
+import './setup';
+
 import { SHARED_CONSTANTS } from '@shared/constants';
 
 mp.events.add('playerReady', (player) => {
