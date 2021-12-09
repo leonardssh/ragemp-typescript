@@ -2,10 +2,13 @@ import jetpack from 'fs-jetpack';
 import path from 'path';
 import { config } from 'dotenv';
 import nodeResolvePlugin from '@rollup/plugin-node-resolve';
-import typescriptPlugin from 'rollup-plugin-typescript2';
+import { swc } from 'rollup-plugin-swc3';
 import { terser } from 'rollup-plugin-terser';
 import jsonPlugin from '@rollup/plugin-json';
 import { blueBright, greenBright, redBright } from 'colorette';
+import builtinModules from 'builtin-modules';
+import commonjsPlugin from '@rollup/plugin-commonjs';
+import tsPaths from 'rollup-plugin-tsconfig-paths';
 
 config({
 	path: path.resolve('.env')
@@ -126,15 +129,31 @@ export default [
 			format: 'cjs'
 		},
 		plugins: [
+			tsPaths({ tsConfigPath: resolvePath([sourcePath, 'server', 'tsconfig.json']) }),
 			nodeResolvePlugin(),
 			jsonPlugin(),
-			typescriptPlugin({
-				check: false,
-				tsconfig: resolvePath([sourcePath, 'server', 'tsconfig.json'])
+			commonjsPlugin(),
+			swc({
+				tsconfig: resolvePath([sourcePath, 'server', 'tsconfig.json']),
+				minify: isProduction,
+				jsc: {
+					target: 'es5',
+					parser: {
+						syntax: 'typescript',
+						dynamicImport: true,
+						decorators: true
+					},
+					transform: {
+						legacyDecorator: true,
+						decoratorMetadata: true
+					},
+					externalHelpers: true,
+					keepClassNames: true
+				}
 			}),
 			productionMode
 		],
-		external: [...localInstalledPackages],
+		external: [...builtinModules, ...localInstalledPackages],
 		inlineDynamicImports: true
 	},
 	{
@@ -144,11 +163,27 @@ export default [
 			format: 'cjs'
 		},
 		plugins: [
+			tsPaths({ tsConfigPath: resolvePath([sourcePath, 'client', 'tsconfig.json']) }),
 			nodeResolvePlugin(),
 			jsonPlugin(),
-			typescriptPlugin({
-				check: false,
-				tsconfig: resolvePath([sourcePath, 'client', 'tsconfig.json'])
+			commonjsPlugin(),
+			swc({
+				tsconfig: resolvePath([sourcePath, 'client', 'tsconfig.json']),
+				minify: isProduction,
+				jsc: {
+					target: 'es5',
+					parser: {
+						syntax: 'typescript',
+						dynamicImport: true,
+						decorators: true
+					},
+					transform: {
+						legacyDecorator: true,
+						decoratorMetadata: true
+					},
+					externalHelpers: true,
+					keepClassNames: true
+				}
 			}),
 			productionMode
 		],

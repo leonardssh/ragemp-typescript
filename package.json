@@ -1,11 +1,11 @@
 {
 	"name": "ragemp-typescript",
-	"version": "1.1.0",
+	"version": "2.0.0",
 	"scripts": {
 		"format": "prettier --write {src,scripts}/**/*.ts",
-		"build:production": "rollup -c ./scripts/rollup.config.mjs --environment NODE_ENV:production",
-		"build": "rollup -c ./scripts/rollup.config.mjs",
-		"watch": "rollup -w -c ./scripts/rollup.config.mjs"
+		"build:production": "rollup -c ./scripts/rollup.config.js --environment NODE_ENV:production",
+		"build": "rollup -c ./scripts/rollup.config.js",
+		"watch": "rollup -w -c ./scripts/rollup.config.js"
 	},
 	"repository": {
 		"type": "git",
@@ -19,15 +19,20 @@
 	"devDependencies": {
 		"@ragemp/types-client": "github:leonardssh/ragemp-types#types-client@v1.0.2",
 		"@ragemp/types-server": "github:leonardssh/ragemp-types#types-server@v1.0.1",
+		"@rollup/plugin-commonjs": "^21.0.1",
 		"@rollup/plugin-json": "^4.1.0",
 		"@rollup/plugin-node-resolve": "^13.0.6",
 		"@rollup/plugin-replace": "^3.0.0",
+		"@swc/core": "^1.2.118",
+		"@swc/helpers": "^0.3.2",
 		"@types/node": "^16.11.10",
+		"builtin-modules": "^3.2.0",
 		"fs-jetpack": "^4.2.0",
 		"prettier": "^2.5.0",
 		"rollup": "^2.60.1",
+		"rollup-plugin-swc3": "^0.1.4",
 		"rollup-plugin-terser": "^7.0.2",
-		"rollup-plugin-typescript2": "^0.31.1",
+		"rollup-plugin-tsconfig-paths": "^1.0.15",
 		"typescript": "^4.5.2"
 	},
 	"dependencies": {
