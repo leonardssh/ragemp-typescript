@@ -3,7 +3,6 @@ import path from 'path';
 import { config } from 'dotenv';
 import nodeResolvePlugin from '@rollup/plugin-node-resolve';
 import { swc } from 'rollup-plugin-swc3';
-import { terser } from 'rollup-plugin-terser';
 import jsonPlugin from '@rollup/plugin-json';
 import { blueBright, greenBright, redBright } from 'colorette';
 import builtinModules from 'builtin-modules';
@@ -111,16 +110,6 @@ function copyFiles() {
 cleanUp();
 copyFiles();
 
-const productionMode = isProduction
-	? terser({
-			keep_classnames: true,
-			keep_fnames: true,
-			output: {
-				comments: false
-			}
-	  })
-	: [];
-
 export default [
 	{
 		input: resolvePath([sourcePath, 'server', 'index.ts']),
@@ -150,8 +139,7 @@ export default [
 					externalHelpers: true,
 					keepClassNames: true
 				}
-			}),
-			productionMode
+			})
 		],
 		external: [...builtinModules, ...localInstalledPackages],
 		inlineDynamicImports: true
@@ -184,8 +172,7 @@ export default [
 					externalHelpers: true,
 					keepClassNames: true
 				}
-			}),
-			productionMode
+			})
 		],
 		inlineDynamicImports: true
 	}
