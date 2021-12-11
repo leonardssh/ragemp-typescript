@@ -64,6 +64,7 @@ function cleanUp() {
 		'dotnet/**/*',
 		'maps/**/*',
 		'plugins/**/*',
+		'client_packages/game_resources/dlcpacks/**/*',
 		'pnpm-lock.yaml',
 		'package-lock.json',
 		'yarn.lock'
