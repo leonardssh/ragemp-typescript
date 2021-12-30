@@ -160,7 +160,7 @@ export default [
 				tsconfig: resolvePath([sourcePath, 'client', 'tsconfig.json']),
 				minify: isProduction,
 				jsc: {
-					target: 'es5',
+					target: 'es2020',
 					parser: {
 						syntax: 'typescript',
 						dynamicImport: true,
