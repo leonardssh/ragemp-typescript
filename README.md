@@ -38,6 +38,24 @@ cd ragemp-typescript
 npm install
 ```
 
+### Rename the `.env.example` file to `.env`
+
+Without it, rollup will not be able to copy the files properly
+
+### Compiler Configuration
+
+The boilerplate comes with 2 compilers:
+
+1. [SWC](https://swc.rs/) - ⚡ultra fast (no support for const enums)
+2. [Typescript](https://www.npmjs.com/package/rollup-plugin-typescript2) - 🐢 very slow (support for const enums)
+
+> To use SWC, set `COMPILER_USE_SWC` to true, and for `TYPESCRIPT` to false
+
+```bash
+PRODUCTION_MODE=false
+COMPILER_USE_SWC=true // <--- CHANGE THE COMPILER BETWEEN SWC & TYPESCRIPT
+```
+
 ### Build the server
 
 Use the command below in any terminal, command prompt, etc. This will transpile and copy the files to the `dist` folder. Folder which is used for production.
@@ -47,10 +65,6 @@ npm run build
 ```
 
 ![](https://i.imgur.com/p6hbXmg.png)
-
-### Rename the `.env.example` file to `.env`
-
-Without it, rollup will not be able to copy the files properly
 
 ### Get Server Files
 
