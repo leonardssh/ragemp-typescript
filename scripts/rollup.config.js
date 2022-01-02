@@ -8,13 +8,16 @@ import { blueBright, greenBright, redBright } from 'colorette';
 import builtinModules from 'builtin-modules';
 import commonjsPlugin from '@rollup/plugin-commonjs';
 import tsPaths from 'rollup-plugin-tsconfig-paths';
+import typescriptPlugin from 'rollup-plugin-typescript2';
+import { terser } from 'rollup-plugin-terser';
 
 config({
 	path: path.resolve('.env')
 });
 
 const buildOutput = 'dist';
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.PRODUCTION_MODE === 'true';
+const useSWC = process.env.COMPILER_USE_SWC === 'true';
 const sourcePath = path.resolve('src');
 const pkgJson = jetpack.read('package.json', 'json');
 const localInstalledPackages = [...Object.keys(pkgJson.dependencies)];
@@ -111,70 +114,72 @@ function copyFiles() {
 cleanUp();
 copyFiles();
 
-export default [
-	{
-		input: resolvePath([sourcePath, 'server', 'index.ts']),
+// use terser only if it is the typescript compiler in use
+const terserMinify =
+	isProduction && !useSWC
+		? terser({
+				keep_classnames: true,
+				keep_fnames: true,
+				output: {
+					comments: false
+				}
+		  })
+		: [];
+
+const generateConfig = (options = {}) => {
+	const { isServer } = options;
+
+	const outputFile = isServer
+		? resolvePath([buildOutput, 'packages', 'core', 'index.js'])
+		: resolvePath([buildOutput, 'client_packages', 'index.js']);
+
+	const serverPlugins = [];
+	const plugins = [terserMinify];
+
+	const external = [...builtinModules, ...localInstalledPackages];
+	const tsConfigPath = resolvePath([sourcePath, isServer ? 'server' : 'client', 'tsconfig.json']);
+
+	return {
+		input: resolvePath([sourcePath, isServer ? 'server' : 'client', 'index.ts']),
 		output: {
-			file: resolvePath([buildOutput, 'packages', 'core', 'index.js']),
+			file: outputFile,
 			format: 'cjs'
 		},
 		plugins: [
-			tsPaths({ tsConfigPath: resolvePath([sourcePath, 'server', 'tsconfig.json']) }),
+			tsPaths({ tsConfigPath }),
 			nodeResolvePlugin(),
 			jsonPlugin(),
 			commonjsPlugin(),
-			swc({
-				tsconfig: resolvePath([sourcePath, 'server', 'tsconfig.json']),
-				minify: isProduction,
-				jsc: {
-					target: 'es5',
-					parser: {
-						syntax: 'typescript',
-						dynamicImport: true,
-						decorators: true
-					},
-					transform: {
-						legacyDecorator: true,
-						decoratorMetadata: true
-					},
-					externalHelpers: true,
-					keepClassNames: true
-				}
-			})
+			useSWC
+				? swc({
+						tsconfig: tsConfigPath,
+						minify: isProduction,
+						jsc: {
+							target: 'es2020',
+							parser: {
+								syntax: 'typescript',
+								dynamicImport: true,
+								decorators: true
+							},
+							transform: {
+								legacyDecorator: true,
+								decoratorMetadata: true
+							},
+							externalHelpers: true,
+							keepClassNames: true,
+							loose: true
+						}
+				  })
+				: typescriptPlugin({
+						check: false,
+						tsconfig: tsConfigPath
+				  }),
+			isServer ? [...serverPlugins] : null,
+			...plugins
 		],
-		external: [...builtinModules, ...localInstalledPackages],
+		external: isServer ? [...external] : null,
 		inlineDynamicImports: true
-	},
-	{
-		input: resolvePath([sourcePath, 'client', 'index.ts']),
-		output: {
-			file: resolvePath([buildOutput, 'client_packages', 'index.js']),
-			format: 'cjs'
-		},
-		plugins: [
-			tsPaths({ tsConfigPath: resolvePath([sourcePath, 'client', 'tsconfig.json']) }),
-			nodeResolvePlugin(),
-			jsonPlugin(),
-			commonjsPlugin(),
-			swc({
-				tsconfig: resolvePath([sourcePath, 'client', 'tsconfig.json']),
-				minify: isProduction,
-				jsc: {
-					target: 'es2020',
-					parser: {
-						syntax: 'typescript',
-						dynamicImport: true,
-						decorators: true
-					},
-					transform: {
-						legacyDecorator: true,
-						decoratorMetadata: true
-					},
-					externalHelpers: true,
-					keepClassNames: true
-				}
-			})
-		],
-		inlineDynamicImports: true
-	}
-];
+	};
+};
+
+export default [generateConfig({ isServer: true }), generateConfig({ isServer: false })];
