@@ -17,8 +17,8 @@
 	},
 	"homepage": "https://github.com/LeonardSSH/ragemp-typescript#readme",
 	"devDependencies": {
-		"@ragemp/types-client": "github:leonardssh/ragemp-types#types-client",
-		"@ragemp/types-server": "github:leonardssh/ragemp-types#types-server",
+		"@ragempcommunity/types-client": "^2.0.2",
+		"@ragempcommunity/types-server": "^2.0.2",
 		"@rollup/plugin-commonjs": "^21.0.1",
 		"@rollup/plugin-json": "^4.1.0",
 		"@rollup/plugin-node-resolve": "^13.0.6",
