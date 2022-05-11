@@ -26,7 +26,7 @@ Remember to 🌟 this Github if you 💖 it.
 Use the command below in any terminal, command prompt, etc.
 
 ```sh
-git clone git@github.com:LeonardSSH/ragemp-typescript.git
+git clone https://github.com/leonardssh/ragemp-typescript.git
 ```
 
 ### Install the necessary modules
