@@ -43,13 +43,11 @@
 	"prettier": {
 		"$schema": "http://json.schemastore.org/prettierrc",
 		"endOfLine": "lf",
-		"printWidth": 150,
-		"quoteProps": "as-needed",
-		"semi": true,
 		"singleQuote": true,
-		"tabWidth": 4,
-		"trailingComma": "none",
-		"useTabs": true,
+		"trailingComma": "es5",
+		"printWidth": 100,
+		"tabWidth": 2,
+		"useTabs": false,
 		"overrides": [
 			{
 				"files": "*.yml",
